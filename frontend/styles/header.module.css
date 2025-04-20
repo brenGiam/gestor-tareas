@@ -1,0 +1,31 @@
+.mainBox {
+    @apply w-full flex flex-col justify-center bg-white;
+  }
+  
+  .box {
+    @apply flex justify-between items-center px-4;
+  }
+  
+  .imageBox {
+    @apply flex flex-col items-center;
+  }
+  
+  .title {
+    @apply text-5xl p-3 w-full;
+  }
+  
+  .subtitle {
+    @apply bg-teal-100 text-base text-center p-3 w-full inline-flex items-center justify-center;
+  }
+  
+  .link {
+    @apply text-sm mt-1 mr-3 whitespace-nowrap hover:text-blue-500;
+  }
+  
+  .image {
+    @apply rounded-full;
+  }
+  
+  .icon {
+    @apply ml-2;
+  }
