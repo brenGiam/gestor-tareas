@@ -34,9 +34,7 @@ export default function Tareas({ title, tasks, fetchTareas }) {
     };
 
     const handleSaveTask = () => {
-        console.log("click en guardar tarea");
         const token = localStorage.getItem("token");
-        console.log("Token obtenido:", token);
         if (!token) {
             console.error("No hay token");
             return;
@@ -45,7 +43,7 @@ export default function Tareas({ title, tasks, fetchTareas }) {
         const usuario_id = decoded.id;
         const tareaData = {
             titulo: titulo || "Sin título",
-            descripcion: descripcion || "",
+            descripcion: descripcion || "Sin descripción",
             categoria: categoria,
             estado: title,
             fecha_creacion: new Date().toISOString().split("T")[0],
@@ -62,7 +60,6 @@ export default function Tareas({ title, tasks, fetchTareas }) {
                 body: JSON.stringify(tareaData),
             })
                 .then((res) => {
-                    console.log("Respuesta del servidor:", res);
                     return res.json();
                 })
                 .then((data) => {
@@ -125,7 +122,12 @@ export default function Tareas({ title, tasks, fetchTareas }) {
                         >
                             <div className={styles.taskOptionsContainer}>
 
-                                {task.titulo}
+                                <p
+                                    onClick={() => handleOpenModal("descripcion", task)}
+                                    className={styles.taskDescription}
+                                >
+                                    {task.titulo}
+                                </p>
 
                                 <div className={styles.taskOptionsIcons}>
                                     <span
@@ -158,53 +160,64 @@ export default function Tareas({ title, tasks, fetchTareas }) {
             </button>
 
             <ModalTareas isOpen={isModalOpen} onClose={() => setModalOpen(false)}>
-                <h3 className={styles.h3Style}>
-                    {modalType === "crear" ? "Añadir nueva tarea" : "Editar tarea"}
-                </h3>
-                <input
-                    type="text"
-                    placeholder="Nombre de la tarea"
-                    value={titulo}
-                    className={styles.inputStyle}
-                    onChange={(e) => setTitulo(e.target.value)}
-                />
-                <input
-                    type="text"
-                    placeholder="Descripción"
-                    value={descripcion}
-                    className={styles.inputStyle}
-                    onChange={(e) => setDescripcion(e.target.value)}
-                />
-                <select
-                    value={categoria}
-                    className={styles.inputStyle}
-                    onChange={(e) => setCategoria(e.target.value)}
-                >
-                    <option value="">Seleccionar categoría</option>
-                    <option value="personal">Personal</option>
-                    <option value="trabajo">Trabajo</option>
-                    <option value="estudio">Estudio</option>
-                    <option value="otro">Otro</option>
-                </select>
-                {modalType === "editar" && (
-                    <select
-                        value={estado}
-                        className={styles.inputStyle}
-                        onChange={(e) => setEstado(e.target.value)}
-                    >
-                        <option value="">Seleccionar estado</option>
-                        <option value="to do">To Do</option>
-                        <option value="in progress">In progress</option>
-                        <option value="in review">In Review</option>
-                        <option value="completed">Completed</option>
-                    </select>
+                {modalType === "descripcion" ? (
+                    <>
+                        <h3 className={styles.h3Style}>Descripción de la tarea</h3>
+                        <p className={styles.descripcionSoloLectura}>
+                            {descripcion}
+                        </p>
+                    </>
+                ) : (
+                    <>
+                        <h3 className={styles.h3Style}>
+                            {modalType === "crear" ? "Añadir nueva tarea" : "Editar tarea"}
+                        </h3>
+                        <input
+                            type="text"
+                            placeholder="Nombre de la tarea"
+                            value={titulo}
+                            className={styles.inputStyle}
+                            onChange={(e) => setTitulo(e.target.value)}
+                        />
+                        <input
+                            type="text"
+                            placeholder="Descripción"
+                            value={descripcion}
+                            className={styles.inputStyle}
+                            onChange={(e) => setDescripcion(e.target.value)}
+                        />
+                        <select
+                            value={categoria}
+                            className={styles.inputStyle}
+                            onChange={(e) => setCategoria(e.target.value)}
+                        >
+                            <option value="">Seleccionar categoría</option>
+                            <option value="personal">Personal</option>
+                            <option value="trabajo">Trabajo</option>
+                            <option value="estudio">Estudio</option>
+                            <option value="otro">Otro</option>
+                        </select>
+                        {modalType === "editar" && (
+                            <select
+                                value={estado}
+                                className={styles.inputStyle}
+                                onChange={(e) => setEstado(e.target.value)}
+                            >
+                                <option value="">Seleccionar estado</option>
+                                <option value="to do">To Do</option>
+                                <option value="in progress">In progress</option>
+                                <option value="in review">In Review</option>
+                                <option value="completed">Completed</option>
+                            </select>
+                        )}
+                        <button
+                            className={styles.modalButton}
+                            onClick={handleSaveTask}
+                        >
+                            {modalType === "crear" ? "Guardar tarea" : "Guardar cambios"}
+                        </button>
+                    </>
                 )}
-                <button
-                    className={styles.modalButton}
-                    onClick={handleSaveTask}
-                >
-                    {modalType === "crear" ? "Guardar tarea" : "Guardar cambios"}
-                </button>
             </ModalTareas>
         </div>
     );

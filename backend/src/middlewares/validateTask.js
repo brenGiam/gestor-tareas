@@ -3,13 +3,9 @@ const { body, validationResult } = require('express-validator');
 const validateTask = [
     body('titulo').notEmpty().withMessage('El título es obligatorio'),
     body('categoria')
-        .custom(value => {
-            if (!value) {
-                value = 'otro';
-            }
-            return ['personal', 'trabajo', 'estudio', 'otro'].includes(value);
-        })
-        .withMessage('Categoria inválida'),
+        .default('otro')
+        .isIn(['personal', 'trabajo', 'estudio', 'otro'])
+        .withMessage('Categoría inválida'),
     body('estado').custom(value => {
         if (value) {
             value = value.toLowerCase();

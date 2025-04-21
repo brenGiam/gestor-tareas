@@ -22,6 +22,10 @@
   @apply flex items-center gap-2
 }
 
+.taskDescription {
+  @apply cursor-pointer hover:underline
+}
+
 .categoriaPersonal {
   background-color: #fbb6ce;
   /* bg-pink-200 */
@@ -64,6 +68,10 @@
 
 .h3Style {
   @apply text-lg font-semibold mb-4;
+}
+
+.descripcionSoloLectura {
+  @apply text-base p-4 bg-gray-100 rounded-xl whitespace-pre-wrap
 }
 
 .inputStyle {
