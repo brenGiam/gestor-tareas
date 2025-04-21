@@ -6,8 +6,9 @@ import Tareas from "./Tareas";
 export default function TareasBox() {
     const [tareas, setTareas] = useState([]);
 
-    useEffect(() => {
+    const fetchTareas = () => {
         const token = localStorage.getItem("token");
+        if (!token) return;
 
         fetch("http://localhost:4000/api/tasks", {
             headers: {
@@ -17,13 +18,17 @@ export default function TareasBox() {
             .then((res) => res.json())
             .then((data) => setTareas(data))
             .catch((err) => console.error("Error al obtener tareas:", err));
+    };
+
+    useEffect(() => {
+        fetchTareas();
     }, []);
 
     const tareasPorEstado = {
         "To Do": [],
         "In Progress": [],
         "In Review": [],
-        "Done": [],
+        "Completed": [],
     };
 
     // Clasificamos tareas según el estado
@@ -40,7 +45,7 @@ export default function TareasBox() {
     return (
         <div className={mainBox}>
             {Object.entries(tareasPorEstado).map(([estado, tasks], index) => (
-                <Tareas key={index} title={estado} tasks={tasks} />
+                <Tareas key={index} title={estado} tasks={tasks} fetchTareas={fetchTareas} />
             ))}
         </div>
     );

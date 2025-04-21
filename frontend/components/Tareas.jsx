@@ -3,15 +3,18 @@
 import { useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import ModalTareas from "./ModalTareas";
+import { FaTrash } from "react-icons/fa";
+import { FaEdit } from "react-icons/fa";
 import styles from "@/styles/tareas.module.css";
 
-export default function Tareas({ title, tasks }) {
+export default function Tareas({ title, tasks, fetchTareas }) {
     const [titulo, setTitulo] = useState('');
     const [descripcion, setDescripcion] = useState('');
     const [categoria, setCategoria] = useState('');
+    const [estado, setEstado] = useState('');
     const [isModalOpen, setModalOpen] = useState(false);
-    const [modalType, setModalType] = useState(""); // 'crear' o 'editar'
-    const [selectedTask, setSelectedTask] = useState(null); // Objeto con la tarea seleccionada para editar
+    const [modalType, setModalType] = useState("");
+    const [selectedTask, setSelectedTask] = useState(null);
 
     const handleOpenModal = (type, task = null) => {
         setModalType(type);
@@ -19,10 +22,13 @@ export default function Tareas({ title, tasks }) {
             setSelectedTask(task);
             setTitulo(task.titulo);
             setDescripcion(task.descripcion);
+            setCategoria(task.categoria);
+            setEstado(task.estado);
         } else {
             setSelectedTask(null);
             setTitulo('');
             setDescripcion('');
+            setCategoria('');
         }
         setModalOpen(true);
     };
@@ -61,6 +67,7 @@ export default function Tareas({ title, tasks }) {
                 })
                 .then((data) => {
                     console.log("Tarea creada:", data);
+                    fetchTareas();
                 })
                 .catch((err) => console.error("Error al crear tarea:", err));
         } else if (modalType === "editar") {
@@ -73,19 +80,39 @@ export default function Tareas({ title, tasks }) {
                 body: JSON.stringify({
                     ...selectedTask,
                     titulo,
-                    descripcion
+                    descripcion,
+                    categoria,
+                    estado
                 }),
             })
                 .then((res) => res.json())
                 .then((data) => {
                     console.log("Tarea actualizada:", data);
-                    // Opción: recargar tareas desde el backend
+                    fetchTareas();
                 })
                 .catch((err) => console.error("Error al editar tarea:", err));
         }
 
         setModalOpen(false);
     };
+
+    const handleDeleteTask = (id) => {
+        const token = localStorage.getItem("token");
+        if (!token) return;
+
+        fetch(`http://localhost:4000/api/tasks/${id}`, {
+            method: "DELETE",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        })
+            .then((res) => res.json())
+            .then(() => {
+                fetchTareas();
+            })
+            .catch((err) => console.error("Error al eliminar tarea:", err));
+    };
+
     return (
         <div className={styles.taskContainer}>
             <h2 className={styles.taskHeader}>{title}</h2>
@@ -95,9 +122,33 @@ export default function Tareas({ title, tasks }) {
                         <li
                             key={index}
                             className={styles.taskStyle}
-                            onClick={() => handleOpenModal("editar", task)}
                         >
-                            {task.titulo}
+                            <div className={styles.taskOptionsContainer}>
+
+                                {task.titulo}
+
+                                <div className={styles.taskOptionsIcons}>
+                                    <span
+                                        className={`
+                                    px-2 py-1 text-sm rounded-md 
+                                    ${task.categoria === "personal" ? styles.categoriaPersonal : ""}
+                                    ${task.categoria === "trabajo" ? styles.categoriaTrabajo : ""}
+                                    ${task.categoria === "estudio" ? styles.categoriaEstudio : ""}
+                                    ${task.categoria === "otro" ? styles.categoriaOtro : ""}
+                                `}
+                                    >
+                                        {task.categoria}
+                                    </span>
+                                    <FaEdit
+                                        onClick={() => handleOpenModal("editar", task)}
+                                        className={styles.editIcon}
+                                    />
+                                    <FaTrash
+                                        onClick={() => handleDeleteTask(task.id)}
+                                        className={styles.deleteIcon}
+                                    />
+                                </div>
+                            </div>
                         </li>
                     ))}
                 </ul>
@@ -135,6 +186,19 @@ export default function Tareas({ title, tasks }) {
                     <option value="estudio">Estudio</option>
                     <option value="otro">Otro</option>
                 </select>
+                {modalType === "editar" && (
+                    <select
+                        value={estado}
+                        className={styles.inputStyle}
+                        onChange={(e) => setEstado(e.target.value)}
+                    >
+                        <option value="">Seleccionar estado</option>
+                        <option value="to do">To Do</option>
+                        <option value="in progress">In progress</option>
+                        <option value="in review">In Review</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                )}
                 <button
                     className={styles.modalButton}
                     onClick={handleSaveTask}
