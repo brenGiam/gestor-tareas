@@ -1,0 +1,43 @@
+.taskContainer {
+    @apply w-80 bg-teal-400 p-4 rounded-md shadow-lg mt-8;
+  }
+  
+  .taskHeader {
+    @apply text-white font-semibold text-lg mb-3;
+  }
+  
+  .taskBody {
+    @apply bg-gray-200 rounded-md p-3 h-64 overflow-y-auto space-y-3;
+  }
+  
+  .taskButton {
+    @apply mt-3 w-full bg-emerald-500 text-white py-2 rounded-md hover:bg-emerald-700 hover:scale-105 transition-transform;
+  }
+  
+  .taskStyle {
+    @apply mb-1 cursor-pointer hover:bg-gray-300 p-1 rounded;
+  }
+  
+  .h3Style {
+    @apply text-lg font-semibold mb-4;
+  }
+  
+  .inputStyle {
+    @apply w-full p-2 border rounded-md mb-4;
+  }
+  
+  .modalButton {
+    @apply bg-teal-500 text-white px-4 py-2 rounded-md hover:bg-teal-700;
+  }
+  
+  .dropMenuBox {
+    @apply flex gap-6 items-center;
+  }
+  
+  .dropMenuStyle {
+    @apply p-2 border rounded-md mb-4;
+  }
+  
+  .buttonBox {
+    @apply flex justify-center gap-4 mt-4;
+  }

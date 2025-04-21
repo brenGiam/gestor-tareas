@@ -4,7 +4,7 @@ import { loginUser } from "@/lib/api";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import styles from "@/styles/homePage.module.css";
+import styles from "@/styles/home.module.css";
 
 export default function Home() {
   const router = useRouter();
