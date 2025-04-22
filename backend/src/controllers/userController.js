@@ -1,3 +1,4 @@
+const cloudinary = require('cloudinary').v2;
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
@@ -35,26 +36,37 @@ exports.createUser = (req, res) => {
 };
 
 // Actualizar un usuario por ID
-exports.updateUser = (req, res) => {
+exports.updateUser = async (req, res) => {
     const { id } = req.params;
-    const { nombre, apellido, mail, contraseña } = req.body;
+    const { nombre, apellido, mail, contraseña, foto } = req.body;
 
-    const updatedUser = {
-        nombre,
-        apellido,
-        mail,
-        contraseña: bcrypt.hashSync(contraseña, 10)
-    };
+    let photoUrl = null;
 
-    User.update(id, updatedUser, (err, result) => {
-        if (err) return res.status(500).json({ error: err.message });
+    try {
+        if (foto) {
+            const result = await cloudinary.uploader.upload(foto, { tags: 'profile_pic' });
+            photoUrl = result.secure_url; // URL de la foto subida a Cloudinary
+        }
+
+        const updatedUser = {
+            nombre,
+            apellido,
+            mail,
+            contraseña: bcrypt.hashSync(contraseña, 10),
+            foto,
+        };
+
+        const result = await User.update(id, updatedUser);
 
         if (result.affectedRows === 0) {
             return res.status(404).json({ mensaje: 'Usuario no encontrado' });
         }
 
         res.json({ mensaje: 'Usuario actualizado con éxito' });
-    });
+    } catch (error) {
+        console.error('Error al actualizar el usuario:', error);
+        res.status(500).json({ error: 'Error interno del servidor' });
+    }
 };
 
 // Eliminar un usuario

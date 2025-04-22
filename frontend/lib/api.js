@@ -4,7 +4,7 @@ export async function loginUser(email, password) {
     const response = await fetch(`${BASE_URL}/users/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ mail: email, contraseña: password }), // respetando los nombres del backend
+        body: JSON.stringify({ mail: email, contraseña: password }),
     });
 
     if (!response.ok) {
