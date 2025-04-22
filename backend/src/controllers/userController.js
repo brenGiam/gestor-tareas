@@ -80,7 +80,7 @@ exports.loginUser = (req, res) => {
         if (err) return res.status(500).json({ error: err.message });
         if (results.length === 0) return res.status(401).json({ error: 'Credenciales inválidas' });
 
-        const user = results[0]; // 💡 importante
+        const user = results[0];
 
         const isMatch = bcrypt.compareSync(contraseña, user.contraseña);
         if (!isMatch) return res.status(401).json({ error: 'Credenciales inválidas' });
@@ -91,6 +91,6 @@ exports.loginUser = (req, res) => {
             { expiresIn: '1h' }
         );
 
-        res.json({ mensaje: 'Login exitoso', token });
+        res.json({ mensaje: 'Login exitoso', token, usuario: user });
     });
 };

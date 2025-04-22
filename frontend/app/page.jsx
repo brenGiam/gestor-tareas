@@ -16,6 +16,8 @@ export default function Home() {
     try {
       const data = await loginUser(email, password);
       localStorage.setItem("token", data.token);
+      localStorage.setItem("usuario", JSON.stringify(data.usuario));
+      window.dispatchEvent(new Event('storage'));
       router.push("/dashboard");
     } catch (error) {
       alert("Error al iniciar sesión");

@@ -1,31 +1,63 @@
 .mainBox {
-    @apply w-full flex flex-col justify-center bg-white;
-  }
-  
-  .box {
-    @apply flex justify-between items-center px-4;
-  }
-  
-  .imageBox {
-    @apply flex flex-col items-center;
-  }
-  
-  .title {
-    @apply text-5xl p-3 w-full;
-  }
-  
-  .subtitle {
-    @apply bg-teal-100 text-base text-center p-3 w-full inline-flex items-center justify-center;
-  }
-  
-  .link {
-    @apply text-sm mt-1 mr-3 whitespace-nowrap hover:text-blue-500;
-  }
-  
-  .image {
-    @apply rounded-full;
-  }
-  
-  .icon {
-    @apply ml-2;
-  }
+  @apply w-full flex flex-col justify-center bg-white;
+}
+
+.box {
+  @apply flex justify-between items-center px-4;
+}
+
+.imageBox {
+  @apply flex flex-col items-center;
+}
+
+.title {
+  @apply text-5xl p-3 w-full;
+}
+
+.subtitle {
+  @apply bg-teal-100 text-base text-center p-3 w-full inline-flex items-center justify-center;
+}
+
+.link {
+  @apply text-sm mt-1 mr-3 whitespace-nowrap hover:text-blue-500;
+}
+
+.image {
+  @apply rounded-full;
+}
+
+.icon {
+  @apply ml-2;
+}
+
+.userMenu {
+  @apply relative;
+}
+
+.userTrigger {
+  @apply flex items-center gap-2 cursor-pointer;
+}
+
+.userAvatar {
+  @apply rounded-full;
+}
+
+.dropdownArrow {
+  @apply text-white text-xs transition-transform duration-200;
+}
+
+.userTrigger[aria-expanded="true"] .dropdownArrow {
+  @apply rotate-180;
+}
+
+.dropdown {
+  @apply absolute right-0 mt-2 w-40 bg-white rounded-lg shadow-lg z-10 overflow-hidden;
+}
+
+.dropdownItem {
+  @apply w-full text-left px-4 py-2 border-none bg-transparent cursor-pointer transition-colors duration-200;
+}
+
+.dropdownItem:hover {
+  @apply bg-gray-100;
+}
