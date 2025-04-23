@@ -2,11 +2,13 @@
 
 import { useEffect, useState, useRef } from "react";
 import { lora, montserrat } from "@/styles/fonts";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import styles from "@/styles/header.module.css";
 
 export default function Header() {
+    const router = useRouter();
     const [usuario, setUsuario] = useState(null);
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const dropdownRef = useRef(null);
@@ -69,7 +71,7 @@ export default function Header() {
                                 <div className={styles.dropdown}>
                                     <button
                                         className={styles.dropdownItem}
-                                        onClick={() => alert("Editar perfil")}
+                                        onClick={() => router.push("/users")}
                                     >
                                         Editar perfil
                                     </button>

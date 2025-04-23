@@ -1,0 +1,55 @@
+.mainBox {
+    @apply bg-teal-900 min-h-screen flex justify-center items-start pt-8;
+  }
+  
+  .box {
+    @apply bg-teal-50 p-6 rounded-lg shadow-lg w-96 mt-8;
+  }
+  
+  .title {
+    @apply text-2xl font-semibold text-teal-800 mb-6;
+  }
+  
+  .imageBox {
+    @apply flex items-center justify-center mb-6;
+  }
+  
+  .image {
+    @apply rounded-full border-4 border-teal-300 cursor-pointer;
+  }
+  
+  .formBox {
+    @apply space-y-4;
+  }
+  
+  .map {
+    @apply flex items-center justify-between;
+  }
+  
+  .label {
+    @apply text-teal-700 capitalize;
+  }
+  
+  .inputBox {
+    @apply flex items-center gap-2 w-2/3;
+  }
+  
+  .input {
+    @apply w-full border rounded-md p-2 text-teal-800;
+  }
+  
+  .inputEditing {
+    @apply border-teal-600 bg-white;
+  }
+  
+  .inputDisabled {
+    @apply border-teal-300 bg-teal-100;
+  }
+  
+  .buttonEdit {
+    @apply text-teal-600 hover:text-teal-800;
+  }
+  
+  .button {
+    @apply w-full bg-emerald-500 text-white py-2 rounded-md hover:bg-emerald-700 hover:scale-105 transition-transform;
+  }
