@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useEffect, useState, useRef } from "react";
 import { lora, montserrat } from "@/styles/fonts";
@@ -57,7 +57,7 @@ export default function Header() {
                                 aria-haspopup="true"
                             >
                                 <Image
-                                    src="/defaultUser.jpg"
+                                    src={usuario.foto || "/defaultUser.jpg"}
                                     width={50}
                                     height={50}
                                     alt="Usuario"
@@ -71,7 +71,10 @@ export default function Header() {
                                 <div className={styles.dropdown}>
                                     <button
                                         className={styles.dropdownItem}
-                                        onClick={() => router.push("/users")}
+                                        onClick={() => {
+                                            setDropdownOpen(false);
+                                            router.push("/users");
+                                        }}
                                     >
                                         Editar perfil
                                     </button>

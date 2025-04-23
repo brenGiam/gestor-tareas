@@ -142,6 +142,10 @@ export default function Users() {
 
     return (
         <div className={styles.mainBox}>
+            <button
+                className={styles.inicioButton}
+                onClick={() => router.push("/dashboard")}
+            >Inicio</button>
             <div className={styles.box}>
                 <h1 className={styles.title}>Mi cuenta</h1>
                 <div className={styles.imageBox}>
