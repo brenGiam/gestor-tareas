@@ -2,8 +2,15 @@ const db = require('../config/db');
 const bcrypt = require('bcryptjs');
 
 // Obtener todos los usuarios
-exports.getAll = (callback) => {
-    db.query('SELECT id, nombre, apellido, mail FROM usuarios', callback);
+exports.getAll = () => {
+    return new Promise((resolve, reject) => {
+        db.query('SELECT id, nombre, apellido, mail FROM usuarios', (error, results) => {
+            if (error) {
+                return reject(error);
+            }
+            resolve(results);
+        });
+    });
 };
 
 // Crear un nuevo usuario

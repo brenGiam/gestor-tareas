@@ -1,21 +1,15 @@
 'use client'
 
 import { useEffect, useState } from "react";
+import { fetchWithAuth } from "../lib/api";
 import Tareas from "./Tareas";
 
 export default function TareasBox() {
     const [tareas, setTareas] = useState([]);
 
     const fetchTareas = () => {
-        const token = localStorage.getItem("token");
-        if (!token) return;
-
-        fetch("http://localhost:4000/api/tasks", {
-            headers: {
-                "Authorization": `Bearer ${token}`
-            }
-        })
-            .then((res) => res.json())
+        fetchWithAuth("http://localhost:4000/api/tasks")
+            .then((res) => res?.json())
             .then((data) => setTareas(data))
             .catch((err) => console.error("Error al obtener tareas:", err));
     };

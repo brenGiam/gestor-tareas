@@ -4,11 +4,13 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
 
 // Obtener todos los usuarios
-exports.getUsers = (req, res) => {
-    User.getAll((err, results) => {
-        if (err) return res.status(500).json({ error: err.message });
+exports.getUsers = async (req, res) => {
+    try {
+        const results = await User.getAll();
         res.json(results);
-    });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
 };
 
 // Crear un nuevo usuario (registro)
@@ -46,13 +48,12 @@ exports.updateUser = async (req, res) => {
             return res.status(404).json({ mensaje: 'Usuario no encontrado' });
         }
 
-        const updatedUser = {
-            nombre: nombre || currentUser.nombre,
-            apellido: apellido || currentUser.apellido,
-            mail: mail || currentUser.mail,
-            contraseña: contraseña ? bcrypt.hashSync(contraseña, 10) : currentUser.contraseña,
-            foto: currentUser.foto
-        };
+        const updateFields = {};
+
+        if (nombre) updateFields.nombre = nombre;
+        if (apellido) updateFields.apellido = apellido;
+        if (mail) updateFields.mail = mail;
+        if (contraseña) updateFields.contraseña = bcrypt.hashSync(contraseña, 10);
 
         if (foto && foto !== currentUser.foto) {
             try {
@@ -60,29 +61,31 @@ exports.updateUser = async (req, res) => {
                     tags: 'profile_pic',
                     public_id: `profile_${id}_${Date.now()}`
                 });
-                updatedUser.foto = result.secure_url;
+                updateFields.foto = result.secure_url;
             } catch (cloudinaryError) {
                 console.error('Error al subir imagen a Cloudinary:', cloudinaryError);
+                req.cloudinaryError = 'No se pudo actualizar la imagen de perfil';
             }
         }
 
-        let updateFields = {};
-        if (nombre) updateFields.nombre = nombre;
-        if (apellido) updateFields.apellido = apellido;
-        if (mail) updateFields.mail = mail;
-        if (updatedUser.foto !== currentUser.foto) updateFields.foto = updatedUser.foto;
+        if (Object.keys(updateFields).length > 0) {
+            const result = await User.update(id, updateFields);
 
-        const result = await User.update(id, updatedUser);
+            if (result.affectedRows === 0) {
+                return res.status(404).json({ mensaje: 'Error al actualizar el usuario' });
+            }
 
-        if (result.affectedRows === 0) {
-            return res.status(404).json({ mensaje: 'Error al actualizar el usuario' });
+            const updatedUser = await User.findById(id);
+            const { contraseña: _, ...userWithoutPassword } = updatedUser;
+
+            return res.json({
+                mensaje: 'Usuario actualizado con éxito',
+                usuario: userWithoutPassword,
+                advertencias: req.cloudinaryError ? [req.cloudinaryError] : []
+            });
+        } else {
+            return res.status(400).json({ mensaje: 'No se proporcionaron campos para actualizar' });
         }
-
-        const { contraseña: _, ...userWithoutPassword } = updatedUser;
-        res.json({
-            mensaje: 'Usuario actualizado con éxito',
-            updatedUser: userWithoutPassword
-        });
     } catch (error) {
         console.error('Error al actualizar el usuario:', error);
         res.status(500).json({ error: 'Error interno del servidor' });

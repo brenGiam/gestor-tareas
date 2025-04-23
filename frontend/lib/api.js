@@ -34,3 +34,30 @@ export async function registerUser(nombre, apellido, email, password) {
 
     return response.json();
 }
+
+export async function fetchWithAuth(url, options = {}) {
+    const token = localStorage.getItem("token");
+
+    const headers = {
+        ...options.headers,
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+    };
+
+    const res = await fetch(url, {
+        ...options,
+        headers,
+    });
+
+    // Si el token expiró o es inválido, forzar logout
+    if (res.status === 401) {
+        const data = await res.json();
+        if (data?.mensaje === "Token expirado" || data?.mensaje === "Token inválido") {
+            localStorage.removeItem("token");
+            window.location.href = "/login";
+            return;
+        }
+    }
+
+    return res;
+}

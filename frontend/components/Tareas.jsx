@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { jwtDecode } from "jwt-decode";
+import { fetchWithAuth } from "../lib/api";
 import ModalTareas from "./ModalTareas";
 import { FaTrash } from "react-icons/fa";
 import { FaEdit } from "react-icons/fa";
@@ -51,41 +52,33 @@ export default function Tareas({ title, tasks, fetchTareas }) {
         };
 
         if (modalType === "crear") {
-            fetch("http://localhost:4000/api/tasks", {
+            fetchWithAuth("http://localhost:4000/api/tasks", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`,
-                },
                 body: JSON.stringify(tareaData),
             })
-                .then((res) => {
-                    return res.json();
-                })
-                .then((data) => {
+                .then(res => res.json())
+                .then(data => {
                     console.log("Tarea creada:", data);
                     fetchTareas();
                 })
                 .catch((err) => console.error("Error al crear tarea:", err));
         } else if (modalType === "editar") {
-            fetch(`http://localhost:4000/api/tasks/${selectedTask.id}`, {
+            fetchWithAuth(`http://localhost:4000/api/tasks/${selectedTask.id}`, {
                 method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`,
-                },
                 body: JSON.stringify({
                     ...selectedTask,
                     titulo,
                     descripcion,
                     categoria,
-                    estado
+                    estado,
                 }),
             })
-                .then((res) => res.json())
+                .then((res) => res?.json())
                 .then((data) => {
-                    console.log("Tarea actualizada:", data);
-                    fetchTareas();
+                    if (data) {
+                        console.log("Tarea actualizada:", data);
+                        fetchTareas();
+                    }
                 })
                 .catch((err) => console.error("Error al editar tarea:", err));
         }
@@ -94,16 +87,10 @@ export default function Tareas({ title, tasks, fetchTareas }) {
     };
 
     const handleDeleteTask = (id) => {
-        const token = localStorage.getItem("token");
-        if (!token) return;
-
-        fetch(`http://localhost:4000/api/tasks/${id}`, {
+        fetchWithAuth(`http://localhost:4000/api/tasks/${id}`, {
             method: "DELETE",
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
         })
-            .then((res) => res.json())
+            .then((res) => res?.json())
             .then(() => {
                 fetchTareas();
             })

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { fetchWithAuth } from "../../lib/api";
 import Image from "next/image";
 import styles from "@/styles/editProfile.module.css";
 
@@ -89,11 +90,10 @@ export default function Users() {
         setSuccessMessage(null);
 
         try {
-            const res = await fetch(`http://localhost:4000/api/users/${storedUser.id}`, {
+            const res = await fetchWithAuth(`http://localhost:4000/api/users/${storedUser.id}`, {
                 method: "PUT",
                 headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json"
                 },
                 body: JSON.stringify(updatedUser),
             });
@@ -101,21 +101,23 @@ export default function Users() {
             const data = await res.json();
 
             if (res.ok) {
+                const responseData = data.usuario || data.updatedUser || {};
+
                 const updatedUserData = {
                     ...storedUser,
-                    ...data.updatedUser,
+                    ...responseData,
                     id: storedUser.id
                 };
 
                 localStorage.setItem("usuario", JSON.stringify(updatedUserData));
                 setUserData(prev => ({
                     ...prev,
-                    ...data.updatedUser,
+                    ...responseData,
                     contraseña: ""
                 }));
 
-                if (data.updatedUser.foto) {
-                    setFotoPreview(data.updatedUser.foto);
+                if (responseData.foto) {
+                    setFotoPreview(responseData.foto);
                 }
 
                 setSuccessMessage("Perfil actualizado con éxito!");
