@@ -1,4 +1,4 @@
-const cloudinary = require('cloudinary').v2;
+const cloudinary = require('../config/cloudinaryConfig');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
@@ -40,29 +40,49 @@ exports.updateUser = async (req, res) => {
     const { id } = req.params;
     const { nombre, apellido, mail, contraseña, foto } = req.body;
 
-    let photoUrl = null;
-
     try {
-        if (foto) {
-            const result = await cloudinary.uploader.upload(foto, { tags: 'profile_pic' });
-            photoUrl = result.secure_url; // URL de la foto subida a Cloudinary
+        const currentUser = await User.findById(id);
+        if (!currentUser) {
+            return res.status(404).json({ mensaje: 'Usuario no encontrado' });
         }
 
         const updatedUser = {
-            nombre,
-            apellido,
-            mail,
-            contraseña: bcrypt.hashSync(contraseña, 10),
-            foto,
+            nombre: nombre || currentUser.nombre,
+            apellido: apellido || currentUser.apellido,
+            mail: mail || currentUser.mail,
+            contraseña: contraseña ? bcrypt.hashSync(contraseña, 10) : currentUser.contraseña,
+            foto: currentUser.foto
         };
+
+        if (foto && foto !== currentUser.foto) {
+            try {
+                const result = await cloudinary.uploader.upload(foto, {
+                    tags: 'profile_pic',
+                    public_id: `profile_${id}_${Date.now()}`
+                });
+                updatedUser.foto = result.secure_url;
+            } catch (cloudinaryError) {
+                console.error('Error al subir imagen a Cloudinary:', cloudinaryError);
+            }
+        }
+
+        let updateFields = {};
+        if (nombre) updateFields.nombre = nombre;
+        if (apellido) updateFields.apellido = apellido;
+        if (mail) updateFields.mail = mail;
+        if (updatedUser.foto !== currentUser.foto) updateFields.foto = updatedUser.foto;
 
         const result = await User.update(id, updatedUser);
 
         if (result.affectedRows === 0) {
-            return res.status(404).json({ mensaje: 'Usuario no encontrado' });
+            return res.status(404).json({ mensaje: 'Error al actualizar el usuario' });
         }
 
-        res.json({ mensaje: 'Usuario actualizado con éxito' });
+        const { contraseña: _, ...userWithoutPassword } = updatedUser;
+        res.json({
+            mensaje: 'Usuario actualizado con éxito',
+            updatedUser: userWithoutPassword
+        });
     } catch (error) {
         console.error('Error al actualizar el usuario:', error);
         res.status(500).json({ error: 'Error interno del servidor' });
