@@ -3,23 +3,23 @@
 }
 
 .box {
-  @apply flex justify-between items-center px-4;
+  @apply flex flex-col sm:flex-row justify-between items-center gap-2 px-4 py-2;
 }
 
 .imageBox {
-  @apply flex flex-col items-center;
+  @apply flex flex-col sm:flex-row items-center gap-2;
 }
 
 .title {
-  @apply text-5xl p-3 w-full;
+  @apply text-3xl sm:text-5xl p-3 w-full text-center sm:text-left;
 }
 
 .subtitle {
-  @apply bg-teal-100 text-base text-center p-3 w-full inline-flex items-center justify-center;
+  @apply bg-teal-100 text-sm sm:text-base text-center p-2 sm:p-3 w-full inline-flex items-center justify-center;
 }
 
 .link {
-  @apply text-sm mt-1 mr-3 whitespace-nowrap hover:text-blue-500;
+  @apply text-sm mt-1 sm:mt-0 mr-3 whitespace-nowrap hover:text-blue-500;
 }
 
 .image {
@@ -39,7 +39,7 @@
 }
 
 .userAvatar {
-  @apply rounded-full;
+  @apply rounded-full w-8 h-8 sm:w-10 sm:h-10 object-cover;
 }
 
 .dropdownArrow {
@@ -51,7 +51,7 @@
 }
 
 .dropdown {
-  @apply absolute right-0 mt-2 w-40 bg-white rounded-lg shadow-lg z-10 overflow-hidden;
+  @apply absolute right-0 mt-2 w-36 sm:w-40 bg-white rounded-lg shadow-lg z-10 overflow-hidden;
 }
 
 .dropdownItem {

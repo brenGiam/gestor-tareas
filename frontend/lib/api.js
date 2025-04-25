@@ -54,7 +54,7 @@ export async function fetchWithAuth(url, options = {}) {
         const data = await res.json();
         if (data?.mensaje === "Token expirado" || data?.mensaje === "Token inválido") {
             localStorage.removeItem("token");
-            window.location.href = "/login";
+            window.location.href = "/";
             return;
         }
     }

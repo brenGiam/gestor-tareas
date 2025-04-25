@@ -1,5 +1,5 @@
 .taskContainer {
-  @apply w-80 bg-teal-400 p-4 rounded-md shadow-lg mt-8;
+  @apply w-full sm:w-80 bg-teal-400 p-4 rounded-md shadow-lg mt-4;
 }
 
 .taskHeader {
@@ -10,56 +10,44 @@
   @apply bg-gray-200 rounded-md p-3 h-64 overflow-y-auto space-y-3;
 }
 
+.taskOptionsContainer {
+  @apply flex justify-between items-center w-full;
+}
+
+.taskOptionsIcons {
+  @apply flex items-center gap-2;
+}
+
 .taskStyle {
   @apply mb-1 hover:bg-gray-300 p-1 rounded;
 }
 
-.taskOptionsContainer {
-  @apply flex justify-between items-center w-full
-}
-
-.taskOptionsIcons {
-  @apply flex items-center gap-2
-}
-
 .taskDescription {
-  @apply cursor-pointer hover:underline
+  @apply cursor-pointer hover:underline;
 }
 
 .categoriaPersonal {
-  background-color: #fbb6ce;
-  /* bg-pink-200 */
-  color: #9b2c2c;
-  /* text-pink-800 */
+  @apply bg-pink-200 text-pink-800;
 }
 
 .categoriaTrabajo {
-  background-color: #c6f6d5;
-  /* bg-green-200 */
-  color: #2f855a;
-  /* text-green-800 */
+  @apply bg-green-200 text-green-800;
 }
 
 .categoriaEstudio {
-  background-color: #bee3f8;
-  /* bg-blue-200 */
-  color: #2b6cb0;
-  /* text-blue-800 */
+  @apply bg-blue-200 text-blue-800;
 }
 
 .categoriaOtro {
-  background-color: #fefcbf;
-  /* bg-yellow-200 */
-  color: #b7791f;
-  /* text-yellow-800 */
+  @apply bg-yellow-200 text-yellow-800;
 }
 
 .editIcon {
-  @apply text-blue-600 hover:text-blue-800 cursor-pointer text-[16px]
+  @apply text-blue-600 hover:text-blue-800 cursor-pointer text-[16px];
 }
 
 .deleteIcon {
-  @apply text-red-600 hover:text-red-800 cursor-pointer ml-2 text-[16px]
+  @apply text-red-600 hover:text-red-800 cursor-pointer ml-2 text-[16px];
 }
 
 .taskButton {
@@ -71,7 +59,7 @@
 }
 
 .descripcionSoloLectura {
-  @apply text-base p-4 bg-gray-100 rounded-xl whitespace-pre-wrap
+  @apply text-base p-4 bg-gray-100 rounded-xl whitespace-pre-wrap;
 }
 
 .inputStyle {
@@ -80,4 +68,8 @@
 
 .modalButton {
   @apply bg-teal-500 text-white px-4 py-2 rounded-md hover:bg-teal-700;
+}
+
+.error {
+  @apply text-red-600 bg-red-100 p-2 rounded-lg mb-4 text-sm font-medium;
 }

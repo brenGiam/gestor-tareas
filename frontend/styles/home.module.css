@@ -1,31 +1,35 @@
 .container {
-    @apply flex items-start justify-center bg-gray-100 py-12;
-  }
-  
-  .card {
-    @apply bg-white p-8 rounded-lg shadow-lg w-full max-w-md;
-  }
-  
-  .title {
-    @apply text-2xl font-semibold text-center mb-6;
-  }
-  
-  .form {
-    @apply space-y-4;
-  }
-  
-  .input {
-    @apply w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500;
-  }
-  
-  .button {
-    @apply w-full py-3 bg-teal-500 text-white font-semibold rounded-md hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-500;
-  }
-  
-  .link {
-    @apply text-blue-600;
-  }
-  
-  .textCenter {
-    @apply mt-7 text-center;
-  }
+  @apply flex flex-col sm:flex-row items-center sm:items-start justify-center bg-gray-100 py-8 px-4 sm:py-12 sm:px-0;
+}
+
+.card {
+  @apply bg-white p-6 sm:p-8 rounded-lg shadow-lg w-full max-w-sm sm:max-w-md;
+}
+
+.title {
+  @apply text-xl sm:text-2xl font-semibold text-center mb-4 sm:mb-6;
+}
+
+.form {
+  @apply space-y-4;
+}
+
+.input {
+  @apply w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500;
+}
+
+.button {
+  @apply w-full py-3 bg-teal-500 text-white font-semibold rounded-md hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-500;
+}
+
+.link {
+  @apply text-blue-600;
+}
+
+.textCenter {
+  @apply mt-6 sm:mt-7 text-center;
+}
+
+.error {
+  @apply text-red-500 text-sm mt-1;
+}

@@ -1,10 +1,23 @@
 const { body, validationResult } = require('express-validator');
 
 const validateUser = [
-    body('nombre').notEmpty().withMessage('El nombre es obligatorio'),
-    body('apellido').notEmpty().withMessage('El apellido es obligatorio'),
-    body('mail').isEmail().withMessage('Debe ser un email válido'),
+    body('nombre')
+        .notEmpty()
+        .withMessage('El nombre es obligatorio'),
+
+    body('apellido')
+        .notEmpty()
+        .withMessage('El apellido es obligatorio'),
+
+    body('mail')
+        .notEmpty()
+        .withMessage('El email es obligatorio')
+        .isEmail()
+        .withMessage('Debe ser un email válido'),
+
     body('contraseña')
+        .notEmpty()
+        .withMessage('La contraseña es obligatoria')
         .isLength({ min: 6 })
         .withMessage('La contraseña debe tener al menos 6 caracteres'),
 
@@ -12,7 +25,10 @@ const validateUser = [
     (req, res, next) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            return res.status(400).json({ errores: errors.array() });
+            const error = new Error('Errores de validación');
+            error.status = 400;
+            error.details = errors.array();
+            return next(error);
         }
         next();
     }

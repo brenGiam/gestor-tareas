@@ -16,6 +16,7 @@ export default function Tareas({ title, tasks, fetchTareas }) {
     const [isModalOpen, setModalOpen] = useState(false);
     const [modalType, setModalType] = useState("");
     const [selectedTask, setSelectedTask] = useState(null);
+    const [error, setError] = useState('');
 
     const handleOpenModal = (type, task = null) => {
         setModalType(type);
@@ -40,10 +41,14 @@ export default function Tareas({ title, tasks, fetchTareas }) {
             console.error("No hay token");
             return;
         }
+        if (!titulo.trim()) {
+            setError("El título es obligatorio.");
+            return;
+        }
         const decoded = jwtDecode(token);
         const usuario_id = decoded.id;
         const tareaData = {
-            titulo: titulo || "Sin título",
+            titulo: titulo,
             descripcion: descripcion || "Sin descripción",
             categoria: categoria,
             estado: title,
@@ -60,6 +65,7 @@ export default function Tareas({ title, tasks, fetchTareas }) {
                 .then(data => {
                     console.log("Tarea creada:", data);
                     fetchTareas();
+                    setError('');
                 })
                 .catch((err) => console.error("Error al crear tarea:", err));
         } else if (modalType === "editar") {
@@ -78,6 +84,7 @@ export default function Tareas({ title, tasks, fetchTareas }) {
                     if (data) {
                         console.log("Tarea actualizada:", data);
                         fetchTareas();
+                        setError('');
                     }
                 })
                 .catch((err) => console.error("Error al editar tarea:", err));
@@ -159,6 +166,7 @@ export default function Tareas({ title, tasks, fetchTareas }) {
                         <h3 className={styles.h3Style}>
                             {modalType === "crear" ? "Añadir nueva tarea" : "Editar tarea"}
                         </h3>
+                        {error && <p className={styles.error}>{error}</p>}
                         <input
                             type="text"
                             placeholder="Nombre de la tarea"

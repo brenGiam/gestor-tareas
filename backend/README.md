@@ -1,4 +1,4 @@
-# 📋 API - Gestor de Tareas
+# 📋 Bakcend - Gestor de Tareas
 
 Esta API permite gestionar tareas y usuarios mediante autenticación con JWT. Con ella podés:
 

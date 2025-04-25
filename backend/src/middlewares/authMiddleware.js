@@ -4,18 +4,26 @@ const authMiddleware = (req, res, next) => {
     const token = req.header('Authorization')?.replace('Bearer ', '');
 
     if (!token) {
-        return res.status(401).json({ mensaje: 'Token no proporcionado' });
+        const error = new Error('Token no proporcionado');
+        error.status = 401;
+        return next(error);
     }
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        req.user = decoded; // guardamos info del usuario si se necesita más adelante
+        req.user = decoded;
         next();
     } catch (err) {
+        let errorMessage = 'Token inválido';
+        let statusCode = 401;
+
         if (err.name === 'TokenExpiredError') {
-            return res.status(401).json({ mensaje: "Token expirado" });
+            errorMessage = 'Token expirado';
         }
-        return res.status(401).json({ mensaje: "Token inválido" });
+
+        const error = new Error(errorMessage);
+        error.status = statusCode;
+        return next(error);
     }
 };
 

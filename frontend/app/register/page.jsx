@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -13,15 +13,43 @@ export default function Register() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
+    const [errors, setErrors] = useState({});
+    const [generalError, setGeneralError] = useState("");
+    const [successMessage, setSuccessMessage] = useState(null);
+
+    const validate = () => {
+        const newErrors = {};
+        if (!nombre) newErrors.nombre = "El nombre es obligatorio.";
+        if (!apellido) newErrors.apellido = "El apellido es obligatorio.";
+        if (!email) newErrors.email = "El email es obligatorio.";
+        if (!password) {
+            newErrors.password = "La contraseña es obligatoria.";
+        } else if (password.length < 6) {
+            newErrors.password = "La contraseña debe tener al menos 6 caracteres.";
+        }
+        return newErrors;
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setErrors({});
+        setGeneralError("");
+        setSuccessMessage("");
+
+        const validationErrors = validate();
+        if (Object.keys(validationErrors).length > 0) {
+            setErrors(validationErrors);
+            return;
+        }
 
         try {
-            const data = await registerUser(nombre, apellido, email, password);
-            alert("Registro exitoso, ahora podés iniciar sesión.");
-            router.push("/"); // te lleva al login
+            await registerUser(nombre, apellido, email, password);
+            setSuccessMessage("¡Te registraste con éxito! Ahora, por favor, inicia sesión. Redirigiendo...");
+            setTimeout(() => {
+                router.push("/"); // redirige al login
+            }, 3000);
         } catch (error) {
-            alert(error.message || "Error en el registro");
+            setGeneralError(error.message || "Error en el registro");
         }
     };
     return (
@@ -37,8 +65,8 @@ export default function Register() {
                             className={styles.input}
                             value={nombre}
                             onChange={(e) => setNombre(e.target.value)}
-                            required
                         />
+                        {errors.nombre && <p className={styles.error}>{errors.nombre}</p>}
                     </div>
                     <div>
                         <input
@@ -48,8 +76,8 @@ export default function Register() {
                             className={styles.input}
                             value={apellido}
                             onChange={(e) => setApellido(e.target.value)}
-                            required
                         />
+                        {errors.apellido && <p className={styles.error}>{errors.apellido}</p>}
                     </div>
                     <div>
                         <input
@@ -59,8 +87,8 @@ export default function Register() {
                             className={styles.input}
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            required
                         />
+                        {errors.email && <p className={styles.error}>{errors.email}</p>}
                     </div>
                     <div>
                         <input
@@ -70,9 +98,11 @@ export default function Register() {
                             className={styles.input}
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            required
                         />
+                        {errors.password && <p className={styles.error}>{errors.password}</p>}
                     </div>
+                    {generalError && <p className={styles.error}>{generalError}</p>}
+                    {successMessage && <p className={styles.success}>{successMessage}</p>}
                     <button
                         type="submit"
                         className={styles.button}

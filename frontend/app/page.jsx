@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { loginUser } from "@/lib/api";
 import { useState } from "react";
@@ -10,9 +10,15 @@ export default function Home() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   async function handleSubmit(e) {
     e.preventDefault();
+    setError("");
+    if (!email || !password) {
+      setError(error.message || "Complete todos los campos");
+      return;
+    }
     try {
       const data = await loginUser(email, password);
       localStorage.setItem("token", data.token);
@@ -20,7 +26,7 @@ export default function Home() {
       window.dispatchEvent(new Event('storage'));
       router.push("/dashboard");
     } catch (error) {
-      alert("Error al iniciar sesión");
+      setError("Error al iniciar sesión. Credenciales inválidas o usuario no registrado");
     }
   }
   return (
@@ -36,7 +42,6 @@ export default function Home() {
               className={styles.input}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              required
             />
           </div>
           <div>
@@ -47,9 +52,9 @@ export default function Home() {
               className={styles.input}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              required
             />
           </div>
+          {error && <p className={styles.error}>{error}</p>}
           <button type="submit" className={styles.button}>
             Iniciar sesión
           </button>

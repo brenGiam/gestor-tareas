@@ -1,5 +1,4 @@
 const db = require('../config/db');
-const bcrypt = require('bcryptjs');
 
 // Obtener todos los usuarios
 exports.getAll = () => {

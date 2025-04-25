@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const corsOptions = require('./config/corsOptions');
 const logger = require('./middlewares/logger');
 const errorHandler = require('./middlewares/errorHandler');
 const taskRoutes = require('./routes/taskRoutes');
@@ -8,14 +9,9 @@ const userRoutes = require('./routes/userRoutes');
 const app = express();
 
 // Middlewares globales
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(logger);
-
-// Ruta principal
-app.get('/', (req, res) => {
-    res.send('<h1>¡Bienvenido a la página principal!</h1><p>Esta es la página de inicio de nuestro servidor.</p>');
-});
 
 // Rutas de tareas con prefijo /api/tasks
 app.use('/api/tasks', taskRoutes);

@@ -17,7 +17,6 @@ exports.findById = (id, callback) => {
 
 // Crear una nueva tarea
 exports.create = (task, callback) => {
-    const fechaActual = new Date();
     const sql = `
         INSERT INTO tareas (titulo, descripcion, categoria, estado, fecha_creacion, usuario_id)
         VALUES (?, ?, ?, ?, ?, ?)
@@ -27,7 +26,7 @@ exports.create = (task, callback) => {
         task.descripcion,
         task.categoria,
         task.estado,
-        fechaActual,
+        task.fecha_creacion,
         task.usuario_id
     ];
     db.query(sql, values, callback);
@@ -36,15 +35,13 @@ exports.create = (task, callback) => {
 // Actualizar una tarea por ID
 exports.update = (id, task, callback) => {
     const sql = `
-        UPDATE tareas SET titulo = ?, descripcion = ?, categoria = ?, estado = ?, usuario_id = ?
-        WHERE id = ?
+        UPDATE tareas SET titulo = ?, descripcion = ?, categoria = ?, estado = ? WHERE id = ?
     `;
     const values = [
         task.titulo,
         task.descripcion,
         task.categoria,
         task.estado,
-        task.usuario_id,
         id
     ];
     db.query(sql, values, callback);

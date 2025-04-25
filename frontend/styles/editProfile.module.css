@@ -1,37 +1,41 @@
 .mainBox {
-  @apply bg-teal-900 min-h-screen flex justify-center items-start pt-8 relative;
+  @apply bg-teal-900 min-h-screen flex flex-col sm:flex-row justify-center items-start pt-6 sm:pt-12 px-4 sm:px-0 relative pb-12;
 }
 
 .inicioButton {
-  @apply absolute top-5 left-5 bg-emerald-500 text-white px-4 py-2 rounded-md hover:bg-emerald-700 hover:scale-105 transition-transform
+  @apply absolute top-4 left-4 sm:top-5 sm:left-5 bg-emerald-500 text-white px-4 py-2 rounded-md hover:bg-emerald-700 hover:scale-105 transition-transform;
 }
 
 .box {
-  @apply bg-teal-50 p-6 rounded-lg shadow-lg w-96 mt-8;
+  @apply bg-teal-50 p-6 rounded-lg shadow-lg w-full max-w-md mt-6 sm:mt-8;
 }
 
 .title {
-  @apply text-2xl font-semibold text-teal-800 mb-6;
+  @apply text-xl sm:text-2xl font-semibold text-teal-800 mb-4 sm:mb-6 text-center;
 }
 
 .imageBox {
-  @apply flex items-center justify-center mb-6 flex-col;
+  @apply flex items-center justify-center mb-4 sm:mb-6 flex-col;
 }
 
 .image {
-  @apply rounded-full border-4 border-teal-300 cursor-pointer;
+  @apply rounded-full w-20 h-20 sm:w-24 sm:h-24 object-cover border-4 border-teal-300;
 }
 
 .fileInput {
-  @apply flex flex-col mt-6;
+  @apply flex flex-col mt-4 sm:mt-6;
 }
 
 .formBox {
   @apply space-y-4;
 }
 
-.map {
-  @apply flex items-center justify-between;
+.fieldContainer {
+  @apply flex flex-col w-full mb-2;
+}
+
+.labelContainer {
+  @apply mb-1;
 }
 
 .label {
@@ -39,7 +43,7 @@
 }
 
 .inputBox {
-  @apply flex items-center gap-2 w-2/3;
+  @apply flex items-center gap-2 w-full;
 }
 
 .input {
@@ -60,4 +64,12 @@
 
 .button {
   @apply w-full bg-emerald-500 text-white py-2 rounded-md hover:bg-emerald-700 hover:scale-105 transition-transform;
+}
+
+.error {
+  @apply text-red-500 text-sm mt-1;
+}
+
+.success {
+  @apply text-green-600 text-sm mt-2;
 }

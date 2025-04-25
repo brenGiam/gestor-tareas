@@ -9,7 +9,7 @@ export default function Dashboard() {
     useEffect(() => {
         const token = localStorage.getItem("token");
         if (!token) {
-            router.push("/"); // Redirige al login si no hay token
+            router.push('/'); // Redirige al login si no hay token
         }
     }, []);
 

@@ -1,36 +1,87 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 📋 Frontend - Gestor de Tareas
 
-## Getting Started
+Este es el frontend de la aplicación Gestor de Tareas, desarrollada con Next.js. Este proyecto está diseñado para interactuar con el backend de la aplicación y proporcionar una interfaz de usuario para gestionar tareas.
 
-First, run the development server:
+---
 
-```bash
+## 💻 Tecnologías
+-Next.js
+-React
+-Tailwind CSS
+-JWT (JSON Web Tokens) para autenticación
+
+---
+
+## 🚀 Instalación
+Clona este repositorio:
+
+git clone https://github.com/tuusuario/nombre-del-repositorio.git
+cd nombre-del-repositorio
+
+Instala las dependencias:
+
+Si usas npm:
+npm install
+
+O si usas yarn:
+yarn install
+
+Ejecuta el proyecto en modo desarrollo:
+
+Si usas npm:
 npm run dev
-# or
+
+O si usas yarn:
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Luego, abre http://localhost:3000 en tu navegador para ver la aplicación.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🧑‍💻 Funcionalidades
+-Autenticación: Los usuarios pueden iniciar sesión para acceder a sus tareas. Los tokens JWT son gestionados para mantener la sesión del usuario.
+-Gestión de tareas: Los usuarios pueden agregar, editar y eliminar tareas.
+-Interacción con el Backend: El frontend interactúa con el backend a través de una API RESTful, enviando solicitudes para crear, actualizar y eliminar tareas.
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 🗂️ Estructura del Proyecto
+/frontend
+  /app
+    /dashboard        # Página principal de usuario autenticado
+    /register         # Página de registro de usuario
+    /users            # Página para gestionar la información del usuario
+    layout.jsx        # Estructura principal del layout
+    page.jsx          # Página principal de la aplicación
+  /components         # Componentes reutilizables
+    Footer.jsx        # Componente para el pie de página
+    Header.jsx        # Componente para el encabezado
+    ModalTareas.jsx   # Componente para agregar/editar tareas
+    Tareas.jsx        # Componente para mostrar tareas
+    TareasBox.jsx     # Componente para mostrar tareas
+  /lib                # Funciones y utilidades
+    api.js            # Funciones para interactuar con el backend (API REST)
+  /public             # Archivos estáticos (imágenes, fuentes, etc.)
+  /styles             # Estilos (CSS, Tailwind, etc.)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 🧪 Autenticación
+Este proyecto utiliza JSON Web Tokens (JWT) para gestionar la autenticación de usuarios. El token se envía en el header de las solicitudes para acceder a los endpoints protegidos:
 
-## Deploy on Vercel
+Header:
+Authorization: Bearer <token_jwt>
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## ⚙️ Interacción con el Backend
+El frontend interactúa con el backend mediante una API RESTful. Algunos ejemplos de los endpoints con los que se comunica el frontend:
+
+-POST /api/users/login - Iniciar sesión para obtener el token JWT.
+-GET /api/tasks - Obtener todas las tareas del usuario autenticado.
+-POST /api/tasks - Crear una nueva tarea.
+-PUT /api/tasks/:id - Actualizar una tarea existente.
+-DELETE /api/tasks/:id - Eliminar una tarea.
+
+El frontend maneja estas interacciones a través de funciones definidas en el archivo lib/api.js.
+     

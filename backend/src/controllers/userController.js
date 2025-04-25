@@ -4,17 +4,17 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/userModel');
 
 // Obtener todos los usuarios
-exports.getUsers = async (req, res) => {
+exports.getUsers = async (req, res, next) => {
     try {
         const results = await User.getAll();
         res.json(results);
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        next(err);
     }
 };
 
 // Crear un nuevo usuario (registro)
-exports.createUser = (req, res) => {
+exports.createUser = (req, res, next) => {
     const { nombre, apellido, mail, contraseña } = req.body;
     const hashedPassword = bcrypt.hashSync(contraseña, 10);
 
@@ -28,9 +28,9 @@ exports.createUser = (req, res) => {
     User.create(newUser, (err, result) => {
         if (err) {
             if (err.code === 'ER_DUP_ENTRY') {
-                return res.status(400).json({ error: 'El email ya está registrado' });
+                return next({ status: 400, message: 'El email ya está registrado' });
             }
-            return res.status(500).json({ error: err.message });
+            return next(err);
         }
 
         res.status(201).json({ mensaje: 'Usuario registrado con éxito', id: result.insertId });
@@ -38,14 +38,14 @@ exports.createUser = (req, res) => {
 };
 
 // Actualizar un usuario por ID
-exports.updateUser = async (req, res) => {
+exports.updateUser = async (req, res, next) => {
     const { id } = req.params;
     const { nombre, apellido, mail, contraseña, foto } = req.body;
 
     try {
         const currentUser = await User.findById(id);
         if (!currentUser) {
-            return res.status(404).json({ mensaje: 'Usuario no encontrado' });
+            return next({ status: 404, message: 'Usuario no encontrado' });
         }
 
         const updateFields = {};
@@ -63,7 +63,6 @@ exports.updateUser = async (req, res) => {
                 });
                 updateFields.foto = result.secure_url;
             } catch (cloudinaryError) {
-                console.error('Error al subir imagen a Cloudinary:', cloudinaryError);
                 req.cloudinaryError = 'No se pudo actualizar la imagen de perfil';
             }
         }
@@ -72,7 +71,7 @@ exports.updateUser = async (req, res) => {
             const result = await User.update(id, updateFields);
 
             if (result.affectedRows === 0) {
-                return res.status(404).json({ mensaje: 'Error al actualizar el usuario' });
+                return next({ status: 404, message: 'Error al actualizar el usuario' });
             }
 
             const updatedUser = await User.findById(id);
@@ -84,23 +83,22 @@ exports.updateUser = async (req, res) => {
                 advertencias: req.cloudinaryError ? [req.cloudinaryError] : []
             });
         } else {
-            return res.status(400).json({ mensaje: 'No se proporcionaron campos para actualizar' });
+            return next({ status: 400, message: 'No se proporcionaron campos para actualizar' });
         }
-    } catch (error) {
-        console.error('Error al actualizar el usuario:', error);
-        res.status(500).json({ error: 'Error interno del servidor' });
+    } catch (err) {
+        next(err);
     }
 };
 
 // Eliminar un usuario
-exports.deleteUser = (req, res) => {
+exports.deleteUser = (req, res, next) => {
     const { id } = req.params;
 
     User.remove(id, (err, result) => {
-        if (err) return res.status(500).json({ error: err.message });
+        if (err) return next(err);
 
         if (result.affectedRows === 0) {
-            return res.status(404).json({ mensaje: 'Usuario no encontrado' });
+            return next({ status: 404, message: 'Usuario no encontrado' });
         }
 
         res.json({ mensaje: 'Usuario eliminado con éxito' });
@@ -108,17 +106,17 @@ exports.deleteUser = (req, res) => {
 };
 
 // Login de usuario
-exports.loginUser = (req, res) => {
+exports.loginUser = (req, res, next) => {
     const { mail, contraseña } = req.body;
 
     User.findByEmail(mail, (err, results) => {
-        if (err) return res.status(500).json({ error: err.message });
-        if (results.length === 0) return res.status(401).json({ error: 'Credenciales inválidas' });
+        if (err) return next(err);
+        if (results.length === 0) return next({ status: 401, message: 'Credenciales inválidas' });
 
         const user = results[0];
 
         const isMatch = bcrypt.compareSync(contraseña, user.contraseña);
-        if (!isMatch) return res.status(401).json({ error: 'Credenciales inválidas' });
+        if (!isMatch) return next({ status: 401, message: 'Credenciales inválidas' });
 
         const token = jwt.sign(
             { id: user.id, email: user.mail },

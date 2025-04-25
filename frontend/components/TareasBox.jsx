@@ -34,7 +34,7 @@ export default function TareasBox() {
         if (columna) tareasPorEstado[columna].push(tarea);
     });
 
-    const mainBox = "flex gap-8 p-4 justify-center";
+    const mainBox = "flex flex-col sm:flex-row flex-wrap gap-4 sm:gap-8 p-4 justify-center";
 
     return (
         <div className={mainBox}>
