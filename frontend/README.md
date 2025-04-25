@@ -5,10 +5,10 @@ Este es el frontend de la aplicación Gestor de Tareas, desarrollada con Next.js
 ---
 
 ## 💻 Tecnologías
--Next.js
--React
--Tailwind CSS
--JWT (JSON Web Tokens) para autenticación
+- Next.js
+- React
+- Tailwind CSS
+- JWT (JSON Web Tokens) para autenticación
 
 ---
 
@@ -39,9 +39,9 @@ Luego, abre http://localhost:3000 en tu navegador para ver la aplicación.
 ---
 
 ## 🧑‍💻 Funcionalidades
--Autenticación: Los usuarios pueden iniciar sesión para acceder a sus tareas. Los tokens JWT son gestionados para mantener la sesión del usuario.
--Gestión de tareas: Los usuarios pueden agregar, editar y eliminar tareas.
--Interacción con el Backend: El frontend interactúa con el backend a través de una API RESTful, enviando solicitudes para crear, actualizar y eliminar tareas.
+- Autenticación: Los usuarios pueden iniciar sesión para acceder a sus tareas. Los tokens JWT son gestionados para mantener la sesión del usuario.
+- Gestión de tareas: Los usuarios pueden agregar, editar y eliminar tareas.
+- Interacción con el Backend: El frontend interactúa con el backend a través de una API RESTful, enviando solicitudes para crear, actualizar y eliminar tareas.
 
 ---
 
@@ -79,11 +79,11 @@ Authorization: Bearer <token_jwt>
 ## ⚙️ Interacción con el Backend
 El frontend interactúa con el backend mediante una API RESTful. Algunos ejemplos de los endpoints con los que se comunica el frontend:
 
--POST /api/users/login - Iniciar sesión para obtener el token JWT.
--GET /api/tasks - Obtener todas las tareas del usuario autenticado.
--POST /api/tasks - Crear una nueva tarea.
--PUT /api/tasks/:id - Actualizar una tarea existente.
--DELETE /api/tasks/:id - Eliminar una tarea.
+- POST /api/users/login - Iniciar sesión para obtener el token JWT.
+- GET /api/tasks - Obtener todas las tareas del usuario autenticado.
+- POST /api/tasks - Crear una nueva tarea.
+- PUT /api/tasks/:id - Actualizar una tarea existente.
+- DELETE /api/tasks/:id - Eliminar una tarea.
 
 El frontend maneja estas interacciones a través de funciones definidas en el archivo lib/api.js.
      
