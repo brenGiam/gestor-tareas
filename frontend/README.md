@@ -15,8 +15,8 @@ Este es el frontend de la aplicación Gestor de Tareas, desarrollada con Next.js
 ## 🚀 Instalación
 Clona este repositorio:
 
-git clone https://github.com/tuusuario/nombre-del-repositorio.git
-cd nombre-del-repositorio
+git clone https://github.com/brenGiam/gestor-tareas.git
+cd gestor-tareas
 
 Instala las dependencias:
 
