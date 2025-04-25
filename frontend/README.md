@@ -46,6 +46,7 @@ Luego, abre http://localhost:3000 en tu navegador para ver la aplicación.
 ---
 
 ## 🗂️ Estructura del Proyecto
+```
 /frontend
   /app
     /dashboard        # Página principal de usuario autenticado
@@ -63,6 +64,7 @@ Luego, abre http://localhost:3000 en tu navegador para ver la aplicación.
     api.js            # Funciones para interactuar con el backend (API REST)
   /public             # Archivos estáticos (imágenes, fuentes, etc.)
   /styles             # Estilos (CSS, Tailwind, etc.)
+  ```
 
 ---
 
