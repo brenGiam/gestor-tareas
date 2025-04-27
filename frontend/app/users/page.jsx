@@ -173,6 +173,7 @@ export default function Users() {
     return (
         <div className={styles.mainBox}>
             <button
+                type="button"
                 className={styles.inicioButton}
                 onClick={() => router.push("/dashboard")}
             >

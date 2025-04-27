@@ -1,5 +1,4 @@
 const errorHandler = (err, req, res, next) => {
-    // Registrar el error de manera más segura
     console.error('Error:', err.stack || err.message || err);
 
     if (err.details) {

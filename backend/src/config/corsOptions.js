@@ -13,7 +13,7 @@ const corsOptions = {
         }
     },
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    credentials: true, // si vas a usar cookies o headers personalizados
+    credentials: true, // si uso cookies o headers personalizados
 };
 
 module.exports = corsOptions;
